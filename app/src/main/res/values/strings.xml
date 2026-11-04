@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ARIANA VPN</string>
+    <string name="developer_name">فاطمه زهرا ساعی (Fatemeh Zahra Saei)</string>
+    <string name="vpn_connect">اتصال به آریانا وی‌پی‌ان</string>
+    <string name="vpn_disconnect">قطع اتصال</string>
+    <string name="vpn_status_connected">متصل و محافظت‌شده</string>
+    <string name="vpn_status_disconnected">قطع اتصال</string>
+    <string name="import_config_hint">کانفیگ VLESS یا WireGuard را وارد کنید</string>
+    <string name="free_license">۱۰۰٪ رایگان - بدون هزینه و بدون تبلیغات</string>
+</resources>
