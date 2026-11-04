@@ -5,6 +5,8 @@ import android.content.Intent
 import android.net.VpnService
 import android.os.Bundle
 import android.graphics.Color
+import android.content.res.ColorStateList
+import android.graphics.Typeface
 import android.view.Gravity
 import android.widget.*
 import androidx.activity.ComponentActivity
@@ -17,6 +19,10 @@ class MainActivity : ComponentActivity() {
     private lateinit var configInput: EditText
     private lateinit var statusText: TextView
 
+    private val gold = Color.rgb(212, 175, 55)
+    private val purple = Color.rgb(65, 48, 85)
+    private val background = Color.rgb(20, 17, 32)
+
     private val vpnPrepareLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
@@ -28,7 +34,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         createScreen()
 
         intent?.data?.toString()?.let {
@@ -40,37 +45,39 @@ class MainActivity : ComponentActivity() {
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER_HORIZONTAL
-            setPadding(28, 35, 28, 25)
-            setBackgroundColor(Color.rgb(20, 17, 32))
+            setPadding(24, 35, 24, 25)
+            setBackgroundColor(background)
         }
 
         val logo = TextView(this).apply {
             text = "Λ"
             textSize = 65f
             gravity = Gravity.CENTER
-            setTextColor(Color.rgb(212, 175, 55))
+            setTextColor(gold)
+            typeface = Typeface.DEFAULT_BOLD
         }
 
         val title = TextView(this).apply {
             text = "ARIANA VPN"
-            textSize = 27f
+            textSize = 29f
             gravity = Gravity.CENTER
             setTextColor(Color.WHITE)
+            typeface = Typeface.DEFAULT_BOLD
         }
 
         val subtitle = TextView(this).apply {
             text = "اتصال امن با سرور VPN"
-            textSize = 15f
+            textSize = 16f
             gravity = Gravity.CENTER
             setTextColor(Color.LTGRAY)
         }
 
         statusText = TextView(this).apply {
             text = "وضعیت: قطع"
-            textSize = 18f
+            textSize = 19f
             gravity = Gravity.CENTER
-            setTextColor(Color.rgb(230, 190, 65))
-            setPadding(0, 35, 0, 25)
+            setTextColor(gold)
+            setPadding(0, 28, 0, 24)
         }
 
         configInput = EditText(this).apply {
@@ -86,6 +93,11 @@ class MainActivity : ComponentActivity() {
 
         val connectButton = Button(this).apply {
             text = "اتصال به VPN"
+            isAllCaps = false
+            textSize = 17f
+            typeface = Typeface.DEFAULT_BOLD
+            setTextColor(background)
+            backgroundTintList = ColorStateList.valueOf(gold)
             setOnClickListener {
                 connectVpn(configInput.text.toString().trim())
             }
@@ -93,6 +105,11 @@ class MainActivity : ComponentActivity() {
 
         val disconnectButton = Button(this).apply {
             text = "قطع اتصال"
+            isAllCaps = false
+            textSize = 17f
+            typeface = Typeface.DEFAULT_BOLD
+            setTextColor(Color.WHITE)
+            backgroundTintList = ColorStateList.valueOf(purple)
             setOnClickListener {
                 disconnectVpn()
             }
@@ -103,7 +120,7 @@ class MainActivity : ComponentActivity() {
             textSize = 13f
             gravity = Gravity.CENTER
             setTextColor(Color.LTGRAY)
-            setPadding(0, 35, 0, 0)
+            setPadding(0, 30, 0, 0)
         }
 
         root.addView(logo)
@@ -111,20 +128,17 @@ class MainActivity : ComponentActivity() {
         root.addView(subtitle)
         root.addView(statusText)
 
-        root.addView(configInput, LinearLayout.LayoutParams(
-            -1, 150
-        ))
+        root.addView(configInput, LinearLayout.LayoutParams(-1, 150))
 
         root.addView(connectButton, LinearLayout.LayoutParams(
             -1, 58
-        ).apply { topMargin = 25 })
+        ).apply { topMargin = 22 })
 
         root.addView(disconnectButton, LinearLayout.LayoutParams(
             -1, 58
-        ))
+        ).apply { topMargin = 12 })
 
         root.addView(footer)
-
         setContentView(root)
     }
 
@@ -143,7 +157,6 @@ class MainActivity : ComponentActivity() {
         }
 
         activeConfig = config
-
         val prepareIntent = VpnService.prepare(this)
 
         if (prepareIntent != null) {
@@ -164,7 +177,7 @@ class MainActivity : ComponentActivity() {
         }
 
         startService(serviceIntent)
-        statusText.text = "درخواست اتصال ارسال شد؛ در انتظار بررسی وضعیت سرور"
+        statusText.text = "درخواست اتصال ارسال شد؛ در انتظار پاسخ سرور"
     }
 
     private fun disconnectVpn() {
